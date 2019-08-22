@@ -13,10 +13,27 @@ Box.prototype.display = function(){ // Display in a color
     pop();
 };
 
+var Column = function(x, y, z, s, h, maxH){
+    this.boxes = [];
+    for(var i = y; i < y + h; i += s){
+        c = map(i, 0, maxH, 0, 255);
+        if(y + h - i < s)
+            this.boxes.push(new Box(x, -(i - s + h) / 2, z, s, h % s, c));
+        else
+            this.boxes.push(new Box(x, -i, z, s, s, c));
+    }
+};
+
+Column.prototype.display = function(){
+    for(var i = 0; i < this.boxes.length; i++){
+        this.boxes[i].display();
+    }
+};
+
 // Takes the number of boxes in width and depth, the boxes' size and max
 // height and generates a terrain
 var Terrain = function(w, d, s, maxH){
-    this.boxes = [];
+    this.columns = [];
     this.width = w * s; // Total width of the terrain
     this.depth = d * s; // Total depth of the terrain
     var count = 0;
@@ -26,8 +43,7 @@ var Terrain = function(w, d, s, maxH){
         for (var j = 0; j< w * s; j += s){
             var n = noise(xOff, zOff); // Noise generated value 
             var h = map(n, 0, 1, 0, maxH); // Height of the box
-            var c = map(n, 0, 1, 0, 255); // Color of the box
-            this.boxes.push(new Box(j, -h / 2, i, s, h, c));
+            this.columns.push(new Column(j, -s / 2, i, s, h, maxH));
             xOff += 0.1;
             count++;
             //console.log(xOff);
@@ -38,15 +54,15 @@ var Terrain = function(w, d, s, maxH){
 };
 
 Terrain.prototype.display = function(){
-    for(var i = 0; i < this.boxes.length; i++){
-        this.boxes[i].display();
+    for(var i = 0; i < this.columns.length; i++){
+        this.columns[i].display();
     }
 };
 
 var terrain;
 
 function setup() {
-	createCanvas(windowWidth, windowHeight, WEBGL);
+	createCanvas(1000, 1000, WEBGL);
     terrain = new Terrain(100, 100, 5, 70);
 };
 
