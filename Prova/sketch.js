@@ -46,8 +46,7 @@ Terrain.prototype.display = function(){
 var terrain;
 
 function setup() {
-	createCanvas(1000, 1000, WEBGL);
-    fullscreen(true);
+	createCanvas(windowWidth, windowHeight, WEBGL);
     terrain = new Terrain(100, 100, 5, 70);
 };
 
