@@ -1,7 +1,5 @@
 var Box = function(x, y, z, s, h, c){ // Takes input x, y, z (coordinates), side, height and color
-    this.x = x;
-    this.y = y;
-    this.z = z;
+    this.coords = createVector(x, y, z);
     this.size = s;
     this.height = h;
     this.color = c;
@@ -9,7 +7,7 @@ var Box = function(x, y, z, s, h, c){ // Takes input x, y, z (coordinates), side
 
 Box.prototype.display = function(){ // Display in a color
     push();
-    translate(this.x, this.y, this.z);
+    translate(this.coords.x, this.coords.y, this.coords.z);
     fill(this.color);
     box(this.size, this.height, this.size);
     pop();
@@ -19,9 +17,10 @@ Box.prototype.display = function(){ // Display in a color
 // height and generates a terrain
 var Terrain = function(w, d, s, maxH){
     this.boxes = [];
+    this.width = w * s; // Total width of the terrain
+    this.depth = d * s; // Total depth of the terrain
     var count = 0;
-    var startX = random();
-    var zOff = random(), xOff;
+    var startX = random(), zOff = random(), xOff;
     for (var i = 0; i < d * s; i += s){
         xOff = startX;
         for (var j = 0; j< w * s; j += s){
@@ -53,9 +52,8 @@ function setup() {
 
 function draw() {
     background(255);
-    translate(0, 0, -700);
     rotateX(map(mouseY, 0, height, PI / 4, -PI / 4));
-    rotateY(map(mouseX, 0, width, -PI / 4, PI / 4));
-    translate(-250, 0, -250);
+    rotateY(map(mouseX, 0, width, -PI / 2, PI / 2));
+    translate(-terrain.width / 2, 0, -terrain.depth / 2);
     terrain.display();
 }
