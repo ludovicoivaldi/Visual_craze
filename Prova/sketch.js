@@ -63,7 +63,7 @@ var terrain;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight, WEBGL);
-    terrain = new Terrain(100, 100, 5, 70);
+    terrain = new Terrain(50, 50, 5, 70);
 };
 
 function draw() {
